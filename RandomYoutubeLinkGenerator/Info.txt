@@ -5,8 +5,11 @@ Link has 11 characters [a-z A-Z 9-0 ]+ _-
 based on integer64 .
 
 
-One way is to gues ID string by brutalforce and save it to Database. "BrutalForceString"
-Try to use Base64 encryption of random number. "ByRandomNumbers"
+One way is to gues ID string by brutalforce and save it to Database. "BrutalForceString" // 0 hits /1000
+Try to use Base64 encryption of random number. "ByRandomNumbers" 0 hits /1000
+
+RegEx[0-9A-Za-z_-]{10}[048AEIMQUYcgkosw]
+
 
 Easy one is to use API serach.list to serach by random keyword and saving resoult to DB and later extract it by random means.
 "RandomSerachKeyWordApi"
