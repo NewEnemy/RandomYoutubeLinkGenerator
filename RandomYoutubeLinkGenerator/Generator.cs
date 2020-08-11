@@ -2,11 +2,11 @@
 
 namespace RandomYoutubeLinkGenerator
 {
-    class Program
+    class Generator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+           
         }
     }
 }
