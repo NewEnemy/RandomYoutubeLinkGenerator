@@ -7,45 +7,57 @@ using System.IO;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using System.Diagnostics;
+using System.Threading;
 
 namespace RandomYoutubeLinkGenerator
 {
     class Generator
     {
         
-        static List<string> wordsList = new List<string>();
-       static Random rand = new Random();
+       
+        
         static void Main(string[] args)
         {
-
+            Random rand = new Random();
             string Querry;
-            int randomNumber = rand.Next(8000);
-            int counter = 0;
-            var file = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/json.txt");
-            using (var reader = new StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/json.txt"))
+            for (int i = 0; i < 10; i++)
             {
-                var json = new JsonTextReader(reader);
-                while (json.Read()||wordsList.Count <2)
+
+                Thread.Sleep(1000);
+                 List<string> wordsList = new List<string>();
+                int randomNumber = rand.Next(8000);
+                int counter = 0;
+                using (var reader = new StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/json.txt"))
                 {
-                    counter++;
-
-                    if (counter == randomNumber && wordsList.Count < 2){
-
-                        wordsList.Add((string)json.Value);
-                        Console.WriteLine(json.Value);
-                        randomNumber = rand.Next(8000);
-                        counter = 0;
+                    var json = new JsonTextReader(reader);
+                    while (json.Read() || wordsList.Count < 2)
+                    {
+                        counter++;
+                        if (counter == randomNumber && wordsList.Count < 2)
+                        {
+                            wordsList.Add((string)json.Value);
+                            Console.WriteLine(json.Value);
+                            randomNumber = rand.Next(8000);
+                            counter = 0;
+                        }
                     }
-                   
                 }
+                Querry = string.Join('+', wordsList);
+                Console.WriteLine(Querry);
+                RandomSerachKeyWordApi youtubeSerach = new RandomSerachKeyWordApi();
+                youtubeSerach.Serach(Querry);
 
+                using (StreamWriter writer = File.AppendText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/test.txt"))
+                {
+                    foreach (var resoult in youtubeSerach.Resoults.Items)
+                    {
+                       writer.WriteLine(resoult.Id.VideoId);
+                    }
+                }
             }
-            Querry = string.Join('+', wordsList);
-            Console.WriteLine(Querry);
-            
-
-
-
+        }
+        private void GetVideos()
+        {
 
         }
         /// <summary>
