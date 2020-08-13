@@ -4,14 +4,47 @@ using ScrapySharp;
 using ScrapySharp.Network;
 using System.Text.Json;
 using System.IO;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.Diagnostics;
 
 namespace RandomYoutubeLinkGenerator
 {
     class Generator
     {
+        
+        static List<string> wordsList = new List<string>();
+       static Random rand = new Random();
         static void Main(string[] args)
         {
+
+            string Querry;
+            int randomNumber = rand.Next(8000);
+            int counter = 0;
+            var file = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/json.txt");
+            using (var reader = new StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/json.txt"))
+            {
+                var json = new JsonTextReader(reader);
+                while (json.Read()||wordsList.Count <2)
+                {
+                    counter++;
+
+                    if (counter == randomNumber && wordsList.Count < 2){
+
+                        wordsList.Add((string)json.Value);
+                        Console.WriteLine(json.Value);
+                        randomNumber = rand.Next(8000);
+                        counter = 0;
+                    }
+                   
+                }
+
+            }
+            Querry = string.Join('+', wordsList);
+            Console.WriteLine(Querry);
             
+
+
 
 
         }
